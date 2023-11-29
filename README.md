@@ -20,7 +20,8 @@ Para utilizar la API de OpenAI y tener acceso a sus modelos, debemos crear una l
 
 
 ## Instalación de librerías para el proyecto
-<code>conda install numpy pandas openai requests<code>
+<code>conda install numpy pandas requests<code>
+<code>conda install -c conda-forge openai<code>
 
 ## Salir de entorno virtual
 <code>conda deactivate NAME</code>
