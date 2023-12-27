@@ -1,9 +1,10 @@
-import openai
 import requests
 import time
+from openai import OpenAI
 
-openai.api_key = "OPENAI_API_KEY"
-TOKEN = "TELEGRAM_TOKEN"
+openai = OpenAI(api_key='INSERTA TU API KEY')
+TOKEN = "INSERTA TU TOKEN DE BOTHFATHER"
+
 
 def get_updates(offset):
     url = f"https://api.telegram.org/bot{TOKEN}/getUpdates"
@@ -11,23 +12,30 @@ def get_updates(offset):
     response = requests.get(url, params=params)
     return response.json()["result"]
 
+
 def send_messages(chat_id, text):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     params = {"chat_id": chat_id, "text": text}
     response = requests.post(url, params=params)
     return response
 
+
 def get_openai_response(prompt):
-    model_engine = "FINE_TUNED_MODEL_NAME"
-    response = openai.Completion.create(
-        engine = model_engine,
-        prompt = prompt,
-        max_tokens = 200,
-        n = 1,
-        stop = " END",
-        temperature = 0.5
-    )
-    return response.choices[0].text.strip()
+    system = '''
+        Eres un asistente de atención a clientes 
+        y estudiantes de la plataforma de educación online en tecnología,  
+        inglés y liderazgo llamada Platzi
+        '''     
+    response = openai.chat.completions.create(
+		model='INGRESA EL NOMBRE DE TU MODELO CON FINE-TUNING',
+		messages=[
+            {"role": "system", "content" :f'{system}'},
+            {"role": "user", "content" : f'{prompt}'}],
+		max_tokens=150,
+		n=1,
+		temperature=0.2)    
+    return response.choices[0].message.content.strip()
+
 
 def main():
     print("Starting bot...")
@@ -44,5 +52,9 @@ def main():
                 send_messages(chat_id, GPT)
         else:
             time.sleep(1)
+
+
+
+
 if __name__ == '__main__':
     main()
